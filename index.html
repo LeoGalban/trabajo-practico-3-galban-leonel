@@ -4,37 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dragon Ball Characters</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS personalizado -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div class="container my-5">
         <h1 class="text-center mb-4">Personajes de Dragon Ball</h1>
+        
         <!-- Barra de búsqueda -->
-<div class="row justify-content-center mb-4">
-    <div class="col-md-8">
-        <div class="input-group">
-            <input type="text" id="searchInput" class="form-control" placeholder="Buscar personaje...">
-            <button id="searchButton" class="btn btn-primary">Buscar</button>
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar personaje...">
+                    <button id="searchButton" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mensajes de estado -->
+        <div id="messageContainer" class="text-center mb-4"></div>
+        
+        <!-- Contenedor de resultados -->
+        <div id="resultsContainer" class="row"></div>
+        
+        <!-- Spinner de carga -->
+        <div id="loadingSpinner" class="text-center my-4 d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Mensajes de estado -->
-<div id="messageContainer" class="text-center mb-4"></div>
-
-<!-- Contenedor de resultados -->
-<div id="resultsContainer" class="row"></div>
-
-<!-- Spinner de carga -->
-<div id="loadingSpinner" class="text-center my-4 d-none">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando...</span>
+    <!-- Modal Para detalles del personaje -->
+    <div class="modal fade" id="characterModal" tabindex="-1" aria-labelledby="characterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalTitle">Detalles del Personaje</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Contenido dinámico se va a insertar acá -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-    </div>
 
+    <!-- Bootstrap JS Bundle con Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JS personalizado -->
     <script src="assets/js/script.js"></script>
 </body>
 </html>

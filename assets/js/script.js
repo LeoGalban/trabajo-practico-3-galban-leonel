@@ -10,6 +10,7 @@ const searchButton = document.getElementById('searchButton');
 const resultsContainer = document.getElementById('resultsContainer');
 const messageContainer = document.getElementById('messageContainer');
 const loadingSpinner = document.getElementById('loadingSpinner');
+const characterModal = new bootstrap.Modal(document.getElementById('characterModal'));
 
 // Al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
@@ -160,7 +161,7 @@ function renderCharacters(characters) {
         const characterCard = document.createElement('div');
         characterCard.className = 'col-md-4 col-lg-3 mb-4';
         characterCard.innerHTML = `
-            <div class="card character-card">
+            <div class="card character-card" data-id="${character.id}">
                 <img src="${character.image || 'https://via.placeholder.com/300'}" 
                      class="card-img-top character-img" 
                      alt="${character.name}">
@@ -173,8 +174,58 @@ function renderCharacters(characters) {
                 </div>
             </div>
         `;
+        
+        // Agregar evento click para mostrar detalles
+        characterCard.addEventListener('click', () => showCharacterDetails(character.id));
+        
         resultsContainer.appendChild(characterCard);
     });
+}
+
+/**
+ * Muestra los detalles de un personaje en el modal
+ * @param {number} id - ID del personaje
+ */
+async function showCharacterDetails(id) {
+    try {
+        showLoading(true);
+        const response = await fetch(`https://dragonball-api.com/api/characters/${id}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const character = await response.json();
+        
+        // Configurar el contenido del modal
+        document.getElementById('modalTitle').textContent = character.name;
+        
+        const modalBody = document.getElementById('modalBody');
+        modalBody.innerHTML = `
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="${character.image || 'https://via.placeholder.com/300'}" 
+                         class="img-fluid rounded mb-3" 
+                         alt="${character.name}">
+                </div>
+                <div class="col-md-8">
+                    <p><strong>Raza:</strong> ${character.race || 'Desconocida'}</p>
+                    <p><strong>Género:</strong> ${character.gender || 'Desconocido'}</p>
+                    <p><strong>Ki:</strong> ${character.ki || 'Desconocido'}</p>
+                    <p><strong>Afiliación:</strong> ${character.affiliation || 'Desconocida'}</p>
+                    ${character.description ? `<p><strong>Descripción:</strong> ${character.description}</p>` : ''}
+                    ${character.transformations ? `<p><strong>Transformaciones:</strong> ${character.transformations.join(', ')}</p>` : ''}
+                </div>
+            </div>
+        `;
+        
+        // Mostrar el modal
+        characterModal.show();
+    } catch (error) {
+        showMessage('Error al cargar los detalles del personaje', 'error');
+    } finally {
+        showLoading(false);
+    }
 }
 
 /**
