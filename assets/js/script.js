@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Maneja la búsqueda de personajes
  */
+ 
 function handleSearch() {
     const searchTerm = searchInput.value.trim();
     
@@ -52,8 +53,7 @@ function handleSearch() {
             if (data.length === 0) {
                 showMessage('No se encontraron personajes con ese nombre', 'info');
             } else {
-                characters = data;
-                renderCharacters(characters);
+                renderCharacters(data);
             }
         })
         .catch(error => {
@@ -72,14 +72,13 @@ async function loadCharacters() {
     
     showLoading(true);
     isLoading = true;
-    
     try {
         const data = await fetchCharacters(currentPage);
         if (data.length === 0 && currentPage === 1) {
             showMessage('No se encontraron personajes', 'info');
         } else if (data.length > 0) {
-            characters = [...characters, ...data];
-            renderCharacters(characters);
+            // characters = [...characters, ...data];
+            renderCharacters(data);
             currentPage++;
         }
     } catch (error) {
@@ -87,7 +86,7 @@ async function loadCharacters() {
     } finally {
         isLoading = false;
         showLoading(false);
-    }
+    } 
 }
 
 /**
@@ -105,11 +104,7 @@ function handleInfiniteScroll() {
     }
 }
 
-/**
- * Obtiene personajes de la API
- * @param {number} page - Página a cargar
- * @returns {Promise<Array>} - Lista de personajes
- */
+
 async function fetchCharacters(page = 1) {
     try {
         const response = await fetch(`https://dragonball-api.com/api/characters?page=${page}`);
@@ -126,31 +121,24 @@ async function fetchCharacters(page = 1) {
     }
 }
 
-/**
- * Busca personajes por nombre
- * @param {string} name - Nombre a buscar
- * @returns {Promise<Array>} - Lista de personajes encontrados
- */
+
 async function searchCharacters(name) {
     try {
-        const response = await fetch(`https://dragonball-api.com/api/characters?name=${encodeURIComponent(name)}`);
+        const response = await fetch(`https://dragonball-api.com/api/characters?name=${name}`);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
-        return data.items || [];
+        return data;
     } catch (error) {
         console.error('Error searching characters:', error);
         throw error;
     }
 }
 
-/**
- * Renderiza los personajes en el DOM
- * @param {Array} characters - Lista de personajes a renderizar
- */
+
 function renderCharacters(characters) {
     // Limpiar mensajes si hay resultados
     if (characters.length > 0) {
@@ -164,7 +152,7 @@ function renderCharacters(characters) {
             <div class="card character-card" data-id="${character.id}">
                 <img src="${character.image || 'https://via.placeholder.com/300'}" 
                      class="card-img-top character-img" 
-                     alt="${character.name}">
+                     alt="${character.name}" style="height: 200px; object-fit: contain;">
                 <div class="card-body">
                     <h5 class="card-title">${character.name}</h5>
                     <p class="card-text">
@@ -182,10 +170,6 @@ function renderCharacters(characters) {
     });
 }
 
-/**
- * Muestra los detalles de un personaje en el modal
- * @param {number} id - ID del personaje
- */
 async function showCharacterDetails(id) {
     try {
         showLoading(true);
@@ -228,21 +212,14 @@ async function showCharacterDetails(id) {
     }
 }
 
-/**
- * Muestra un mensaje en la interfaz
- * @param {string} text - Texto del mensaje
- * @param {string} type - Tipo de mensaje (error, info)
- */
+
 function showMessage(text, type) {
     messageContainer.innerHTML = `
         <div class="${type}-message">${text}</div>
     `;
 }
 
-/**
- * Muestra u oculta el spinner de carga
- * @param {boolean} show - Mostrar u ocultar
- */
+
 function showLoading(show) {
     if (show) {
         loadingSpinner.classList.remove('d-none');

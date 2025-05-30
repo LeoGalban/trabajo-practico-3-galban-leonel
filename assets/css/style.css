@@ -1,19 +1,45 @@
 body {
-    background-color: #f8f9fa;
+    background-image: url(/assets/imagen/goku.jpg);
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: #fffffff5;
+
 }
 
+.container {
+
+    background-color: rgba(255, 170, 255, 0.404);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 30px;
+}
 .character-card {
     transition: transform 0.3s;
     margin-bottom: 20px;
     cursor: pointer;
+    background-color: #ffa1d53a;
 }
 
+@font-face {
+    font-family: "Saiyan-Sans";
+    src: url(/assets/font/Saiyan-Sans.ttf);
+}
+
+h1 {
+   font-family: "Saiyan-Sans";
+   color: #750041;
+
+}
 .character-card:hover {
     transform: scale(1.03);
 }
 
 .character-img {
-    height: 200px;
+    height: 400px;
     object-fit: cover;
 }
 
@@ -27,6 +53,6 @@ body {
 }
 
 .info-message {
-    color: #0dcaf0;
+    color: #f0730d;
     font-weight: bold;
 }
